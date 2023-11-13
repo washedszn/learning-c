@@ -48,10 +48,10 @@ Node* insertAtEnd(Node* head, Node* newNode) {
         return newNode;
     }
     while(ptr->next != NULL) {
-        ptr = ptr->next->next;
+        ptr = ptr->next;
     }
     ptr->next = newNode;
-    return ptr;
+    return head;
 }
 
 // TODO: insertAfterNode() - inserts new node after given node
@@ -68,7 +68,7 @@ Node* insertAfterNode(Node* head, Node* node, Node* newNode) {
         }
         ptr = ptr->next->next;
     }
-    return ptr;
+    return head;
 }
 
 // TODO: insertBeforeNode() - inserts new node before given node
@@ -155,12 +155,30 @@ Node* findNode(Node* head, Node* node) {
         if (ptr == node) {
             return ptr;
         }
+        ptr = ptr->next;
     }
     fprintf(stderr, "Failed to find node");
     exit(EXIT_FAILURE);
 }
 
 // TODO: findWithCallback() - searches for node using callback to compare
+void printNode(Node* node) {
+    printf("%d ", node->data);
+    printf("\n");
+}
+
+void findWithCallback(Node* head, Node* node, void (*cb)()) {
+    Node* ptr = head;
+    while (ptr != NULL) {
+        if (ptr == node) {
+            (*cb)(ptr);
+            return;
+        }
+        ptr = ptr->next;
+    }
+    fprintf(stderr, "Failed to find node");
+    exit(EXIT_FAILURE);
+}
 
 // TODO: traverseList() - goes through list start to end
 void traverseList(Node* head) {
@@ -176,8 +194,34 @@ void traverseList(Node* head) {
     printf("\n");
 }
 // TODO: listSize() - returns number of nodes in list
+int listSize(Node* head) {
+    Node* ptr = head;
+    int n = 0;
+    while (ptr != NULL) {
+        n++;
+        ptr = ptr->next;
+    }
+    return n;
+}
 
 // TODO: reverseList() - reverse the order of nodes
+// doesn't work
+Node* reverseList(Node* head) {
+    Node* ptrL = head;
+    Node* ptrR = NULL;
+    while (ptrL != NULL) {
+        if (ptrR == NULL) {
+            ptrR = ptrL;
+            ptrR->next = NULL;
+        } else {
+            Node* temp = ptrR;
+            ptrR = ptrL;
+            ptrL->next = temp;
+        }
+        ptrL = ptrL->next;
+    }
+    return head;
+}
 
 // test our linked list implementation
 int main() {
@@ -214,17 +258,29 @@ int main() {
     head = insertAtEnd(head, node8);
     traverseList(head);
 
-    // head = deleteFromBeginning(head);
-    // traverseList(head);
+    head = deleteFromBeginning(head);
+    traverseList(head);
 
-    // head = deleteFromEnd(head);
-    // traverseList(head);
+    head = deleteFromEnd(head);
+    traverseList(head);
 
-    // head = deleteNode(head, node5);
-    // traverseList(head);
+    head = deleteNode(head, node5);
+    traverseList(head);
 
-    // deleteList(&head);
-    // traverseList(head);
+    Node* found = findNode(head, node2);
+
+    void (*cb)() = &printNode;
+    findWithCallback(head, node2, cb);
+
+    printf("%d ", listSize(head));
+    printf("\n");
+
+    traverseList(head);
+    head = reverseList(head);
+    traverseList(head);
+
+    deleteList(&head);
+    traverseList(head);
     // Add insertion logic here to link the new node into the list
     // Add traversal logic here to verify the list contents
     // Remember to free the allocated memory to avoid memory leaks
