@@ -104,16 +104,63 @@ Node* insertBeforeNode(Node* head, Node* node, Node* newNode) {
 }
 
 // TODO: deleteFromBeginning() - removes node from start of list
+Node* deleteFromBeginning(Node* head) {
+    if (head->next == NULL) {
+        fprintf(stderr, "List is empty");
+        exit(EXIT_FAILURE);
+    }
+    return head->next;
+}
 
 // TODO: deleteFromEnd() - removes node from end of list
+Node* deleteFromEnd(Node* head) {
+    Node* ptr = head;
+    while (ptr->next->next != NULL) {
+        ptr = ptr->next;
+    }
+    ptr->next = NULL;
+    return head;
+}
 
 // TODO: deleteNode() - removes specific node from list
+Node* deleteNode(Node* head, Node* node) {
+    Node* ptr = head;
+    while (ptr != NULL) {
+        if (ptr->next == node) {
+            ptr->next = ptr->next->next;
+            break;
+        }
+        ptr = ptr->next;
+    }
+    return head;
+}
 
 // TODO: deleteList() - removes all nodes and frees memory
+void deleteList(Node** head) {
+    Node* current = *head;
+    Node* nextNode;
+    while(current != NULL) {
+        nextNode = current->next;
+        free(current);
+        current = nextNode;
+    }
+
+    *head = NULL;
+}
 
 // TODO: findNode() - searches for node by value and returns 
+Node* findNode(Node* head, Node* node) {
+    Node* ptr = head;
+    while (ptr != NULL) {
+        if (ptr == node) {
+            return ptr;
+        }
+    }
+    fprintf(stderr, "Failed to find node");
+    exit(EXIT_FAILURE);
+}
 
-// TODO: findWithCallback() - searchs for node using callback to compare
+// TODO: findWithCallback() - searches for node using callback to compare
 
 // TODO: traverseList() - goes through list start to end
 void traverseList(Node* head) {
@@ -154,8 +201,32 @@ int main() {
     Node* node5 = createNode(5);
     head = insertBeforeNode(head, node3, node5);
     traverseList(head);
+
+    Node* node6 = createNode(6);
+    head = insertAtEnd(head, node6);
+    traverseList(head);
+
+    Node* node7 = createNode(7);
+    head = insertAtEnd(head, node7);
+    traverseList(head);
+
+    Node* node8 = createNode(8);
+    head = insertAtEnd(head, node8);
+    traverseList(head);
+
+    // head = deleteFromBeginning(head);
+    // traverseList(head);
+
+    // head = deleteFromEnd(head);
+    // traverseList(head);
+
+    // head = deleteNode(head, node5);
+    // traverseList(head);
+
+    // deleteList(&head);
+    // traverseList(head);
     // Add insertion logic here to link the new node into the list
-    // Add traversal logic here to verfiy the list contents
+    // Add traversal logic here to verify the list contents
     // Remember to free the allocated memory to avoid memory leaks
     return 0;
 }
