@@ -105,11 +105,13 @@ Node* insertBeforeNode(Node* head, Node* node, Node* newNode) {
 
 // TODO: deleteFromBeginning() - removes node from start of list
 Node* deleteFromBeginning(Node* head) {
-    if (head->next == NULL) {
-        fprintf(stderr, "List is empty");
-        exit(EXIT_FAILURE);
+    if (head == NULL) {
+        fprintf(stderr, "Empty is List\n");
+        return NULL;
     }
-    return head->next;
+    Node* newHead = head->next;
+    free(head);
+    return newHead;
 }
 
 // TODO: deleteFromEnd() - removes node from end of list
@@ -118,6 +120,7 @@ Node* deleteFromEnd(Node* head) {
     while (ptr->next->next != NULL) {
         ptr = ptr->next;
     }
+    free(ptr->next);
     ptr->next = NULL;
     return head;
 }
@@ -127,7 +130,9 @@ Node* deleteNode(Node* head, Node* node) {
     Node* ptr = head;
     while (ptr != NULL) {
         if (ptr->next == node) {
+            Node* temp = ptr->next;
             ptr->next = ptr->next->next;
+            free(temp);
             break;
         }
         ptr = ptr->next;
@@ -158,7 +163,7 @@ Node* findNode(Node* head, Node* node) {
         ptr = ptr->next;
     }
     fprintf(stderr, "Failed to find node");
-    exit(EXIT_FAILURE);
+    return NULL;
 }
 
 // TODO: findWithCallback() - searches for node using callback to compare
@@ -177,7 +182,7 @@ void findWithCallback(Node* head, Node* node, void (*cb)()) {
         ptr = ptr->next;
     }
     fprintf(stderr, "Failed to find node");
-    exit(EXIT_FAILURE);
+    return;
 }
 
 // TODO: traverseList() - goes through list start to end
@@ -185,7 +190,7 @@ void traverseList(Node* head) {
     Node* ptr = head;
     if (ptr == NULL) {
         printf("Empty list\n");
-        exit(EXIT_SUCCESS);
+        return;
     }
     while (ptr != NULL) {
         printf("%d ", ptr->data);
@@ -205,22 +210,21 @@ int listSize(Node* head) {
 }
 
 // TODO: reverseList() - reverse the order of nodes
-// doesn't work
 Node* reverseList(Node* head) {
-    Node* ptrL = head;
-    Node* ptrR = NULL;
-    while (ptrL != NULL) {
-        if (ptrR == NULL) {
-            ptrR = ptrL;
-            ptrR->next = NULL;
-        } else {
-            Node* temp = ptrR;
-            ptrR = ptrL;
-            ptrL->next = temp;
-        }
-        ptrL = ptrL->next;
+    Node* prev = NULL;
+    Node* current = head;
+    Node* next = NULL;
+    if (head == NULL) {
+        fprintf(stderr, "List Empty");
+        return NULL;
     }
-    return head;
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    return prev;
 }
 
 // test our linked list implementation
