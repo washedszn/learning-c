@@ -51,4 +51,28 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-.vscode
+# Compiled executables
+hello
+stack
+queue
+circular_queue
+priority_queue
+binary_tree
+binary_search_tree
+heap
+graph
+hash_table
+trie
+avl_tree
+red_black_tree
+b_tree
+b_plus_tree
+segment_tree
+fenwick_tree
+
+# Temporary files
+*.o
+*.out
+*.dSYM/
+.vscode/
+*.dSYM/

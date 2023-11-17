@@ -39,15 +39,15 @@ Queue* createQueue() {
 // enqueue
 Queue* enqueue(Queue* queue, Node* node) {
     if (queue == NULL) {
-        fprintf(stderr, "Qeueu is NULL");
-        return NULL;
+        fprintf(stderr, "Queue is NULL");
+        return queue;
     }
     if (queue->front == NULL) {
         queue->front = node;
         queue->back = node;
     } else {
-        node->next = queue->front;
-        queue->front = node;
+        queue->back->next = node;
+        queue->back = node;
     }
     return queue;
 }
@@ -58,23 +58,19 @@ Queue* dequeue(Queue* queue) {
         fprintf(stderr, "Queue is NULL");
         return NULL;
     }
-    if (queue->front == NULL) {
+    Node* front = queue->front;
+    Node* back = queue->back;
+    if (front == NULL) {
         fprintf(stderr, "Nothing to dequeue");
-        return queue;
-    } else if (queue->front->next == NULL) {
-        Node* tempFront = queue->front;
-        Node* tempBack = queue->back;
+    } else if (front == back) {
         queue->front = NULL;
         queue->back = NULL;
-        free(tempFront);
-        free(tempBack);
-        return queue;
+        free(front);
     } else {
-        Node* tempFront = queue->front;
-        queue->front = tempFront->next;
-        free(tempFront);
-        return queue;
+        queue->front = front->next;
+        free(front);
     }
+    return queue;
 }
 
 // Peek
@@ -90,9 +86,9 @@ Node* peek(Queue* queue) {
 bool isEmpty(Queue* queue) {
     if (queue == NULL) {
         fprintf(stderr, "Queue is NULL");
-        return NULL;
+        return false;
     }
-    if (queue->back == NULL) {
+    if (queue->front == NULL) {
         return true;
     }
     return false;
@@ -105,11 +101,15 @@ int main() {
     Node* node2 = createNode(2);
     Node* node3 = createNode(3);
     Node* node4 = createNode(4);
+    Node* node5 = createNode(5);
 
     queue = enqueue(queue, node1);
     queue = enqueue(queue, node2);
     queue = enqueue(queue, node3);
     queue = dequeue(queue);
+    enqueue(queue, node4);
+    dequeue(queue);
+    enqueue(queue, node5);
 
     if (isEmpty(queue)) {
         printf("yes");
