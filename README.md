@@ -9,7 +9,7 @@ This repository contains implementations for various data structures. Each data 
 - [x] **Stack**: LIFO data structure with `push` and `pop` operations.
 - [x] **Queue**: FIFO data structure with `enqueue` and `dequeue` operations.
 - [x] **Circular Queue (Ring Buffer)**: A circular variant of the queue that efficiently utilizes fixed-size storage.
-- [ ] **Priority Queue**: A queue where each element has a priority, and higher priority elements are served before lower priority ones.
+- [x] **Priority Queue**: A queue where each element has a priority, and higher priority elements are served before lower priority ones.
 - [ ] **Binary Tree**: A tree data structure where each node has two children at most.
 - [ ] **Binary Search Tree (BST)**: A binary tree that keeps elements in sorted order, allowing for efficient search, insertion, and deletion.
 - [ ] **Heap**: A specialized tree structure that satisfies the heap property, used in priority queues.
